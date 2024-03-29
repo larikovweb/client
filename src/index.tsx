@@ -1,21 +1,16 @@
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import Store from './store/store';
-import { createContext } from 'react';
+import { createRoot } from 'react-dom/client';
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import Application from './app/Application';
 
-interface IContext {
-  store: Store;
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const cache = createCache({ key: 'css', nonce: 'dev' });
+
+  const root = createRoot(rootElement);
+  root.render(
+    <CacheProvider value={cache}>
+      <Application />
+    </CacheProvider>,
+  );
 }
-
-const store = new Store();
-
-export const Context = createContext<IContext>({
-  store,
-});
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <Context.Provider value={{ store }}>
-    <App />
-  </Context.Provider>,
-);
